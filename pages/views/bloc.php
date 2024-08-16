@@ -1,10 +1,16 @@
+<?php 
+    include '../../connexion/connexion.php';//Se connecter à la BD
+    #Appel de la page qui permet de faire les affichages
+    require_once('../models/select/sel-bloc.php');
+   
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Acceuil</title>
+  <title>Bloc</title>
   <?php require_once ('style.php') ?>
 </head>
 
@@ -21,16 +27,29 @@
         <div class="col-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">Enregistrement Blocs</h4>
+              <h4 class="card-title"><?=$title?></h4>
               <p class="card-description">
                 Veillez remplir tout les champs
               </p>
-              <form class="forms-sample">
+               <!-- pour afficher les massage  -->
+               <?php
+                if(isset($_SESSION['msg']) && !empty($_SESSION['msg'])){
+                    ?><div class="alert-info alert text-center alert-dismissible fade show" role="alert">
+                    <?=$_SESSION['msg']?>
+                </div><?php
+                }
+                unset($_SESSION['msg']);#Cette ligne permet de vider la valeur qui se trouve dans la session message
+            ?>
+              <form class="forms-sample" action="<?=$url?>" method="POST">
                 <div class="form-group">
                   <label for="exampleInputName1">Nom du bloc</label>
-                  <input type="text" class="form-control" id="exampleInputName1" placeholder="Entrer le nom">
+                  <input type="text" class="form-control" name="bloc" id="exampleInputName1" placeholder="Entrer le nom du bloc"  <?php if (isset($_GET['idbloc'])) { ?> value="<?php echo $tab['designation']; ?> <?php }?>">
                 </div>
-                <button type="submit" class="btn btn-primary mr-2">Valider</button>
+                
+                  <div
+                     class="col-xl-12 col-lg-12 col-md-12 mt-10 col-sm-12 p-3 aling-center">
+                     <input type="submit" class="btn btn-primary mr-2" name="valider" value="<?=$btn?>">
+                  </div>
               </form>
             </div>
           </div>
@@ -49,14 +68,21 @@
                     </tr>
                   </thead>
                   <tbody>
+                  <?php
+                                $n=0;
+                                while($bloc=$getData->fetch()){
+                                $n++;
+                                ?>
                     <tr>
-                      <td>1</td>
-                      <td>Bloc Pagne</td>
+                    <th scope="row"><?= $n;?></th>
+                    <td> <?= $bloc["designation"] ?></td>
                       <td>
-                      <a href='' class="btn btn-success btn-sm "><i class="mdi mdi-box-cutter"></i></i></a>
-                      <a href='' class="btn btn-dark btn-sm "><i class="mdi mdi-archive"></i></a>
+                      <a href='bloc.php?idbloc=<?=$bloc['id'] ?>' class="btn btn-success btn-sm "><i class="mdi mdi-box-cutter">Modifier</a>
                       </td>
                     </tr>
+                    <?php
+                                }
+                            ?>
                   </tbody>
                 </table>
               </div>

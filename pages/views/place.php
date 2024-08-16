@@ -1,10 +1,16 @@
+<?php 
+    include '../../connexion/connexion.php';//Se connecter à la BD
+    #Appel de la page qui permet de faire les affichages
+    require_once('../models/select/sel-place.php');
+   
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Acceuil</title>
+  <title>Bloc</title>
   <?php require_once ('style.php') ?>
 </head>
 
@@ -21,16 +27,50 @@
         <div class="col-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">Enregistrement Etallage</h4>
+              <h4 class="card-title"><?=$title?></h4>
               <p class="card-description">
                 Veillez remplir tout les champs
               </p>
-              <form class="forms-sample">
-                <div class="form-group">
-                  <label for="exampleInputName1">Nom de l'etallage</label>
-                  <input type="text" class="form-control" id="exampleInputName1" placeholder="Entrer le nom">
+               <!-- pour afficher les massage  -->
+               <?php
+                if(isset($_SESSION['msg']) && !empty($_SESSION['msg'])){
+                    ?><div class="alert-info alert text-center alert-dismissible fade show" role="alert">
+                    <?=$_SESSION['msg']?>
+                </div><?php
+                }
+                unset($_SESSION['msg']);#Cette ligne permet de vider la valeur qui se trouve dans la session message
+            ?>
+              <form class="forms-sample" action="<?=$url?>" method="POST">
+              <div class="form-group">
+              <label for="exampleSelectGender">Bloc</label>
+                                <select required id="" name="bloc" autocomplete="off" class="form-control" id="exampleSelectGender"
+                                value="<?php echo $tab['designation']; ?> ">
+                                <?php 
+                        $req=$connexion->prepare("SELECT * from bloc where supprimer=0");
+                        $req->execute();
+                        while($bloc=$req->fetch()){ 
+                            $id=$bloc['id'];
+                                    
+                            ?>
+                             <?php if (isset($_GET['idbloc'])) { ?>
+                                <option <?php if($id==$tab['bloc']) {?> selected value="<?php echo $bloc['id']; ?>"><?php echo  $bloc['designation']; ?><?php } else { ?> value="<?php echo $bloc['id']; ?>"><?php echo  $bloc['designation'];} ?></option>
+
+                             <?php } else {?>  
+
+                        <option value="<?php echo $bloc['id']; ?>"><?php echo  $bloc['designation']; ?></option>
+                        <?php }?>
+                        <?php 
+
+                            }
+
+                            ?>
+                                </select>
                 </div>
-                <button type="submit" class="btn btn-primary mr-2">Valider</button>
+                
+                  <div
+                     class="col-xl-12 col-lg-12 col-md-12 mt-10 col-sm-12 p-3 aling-center">
+                     <input type="submit" class="btn btn-primary mr-2" name="valider" value="<?=$btn?>">
+                  </div>
               </form>
             </div>
           </div>
@@ -44,21 +84,29 @@
                   <thead>
                     <tr>
                       <th># </th>
-                      <th>Noms</th>
-                      <th>Genre</th>
+                      <th>Numero</th>
+                      <th>Bloc</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
+                  <?php
+                                $n=0;
+                                while($bloc=$getData->fetch()){
+                                $n++;
+                                ?>
                     <tr>
-                      <td>1</td>
-                      <td>Kahindo Muyisa Seraphine</td>
-                      <td>Fille</td>
+                    <th scope="row"><?= $n;?></th>
+                    <td><?= $bloc["Numero"] ?></td>
+                    <td> <?= $bloc["designation"] ?></td>
                       <td>
-                      <a href='' class="btn btn-success btn-sm "><i class="mdi mdi-box-cutter"></i></i></a>
-                      <a href='' class="btn btn-dark btn-sm "><i class="mdi mdi-archive"></i></a>
+                      <a href='place.php?idbloc=<?=$bloc['Numero'] ?>' class="btn btn-success btn-sm ">Modifier</a>
+                      <a onclick=" return confirm('Voulez-vous vraiment supprimer ?')" href='../models/delete/del-place.php?idsup=<?=$bloc['Numero'] ?>' class="btn btn-dark btn-sm ">supprimer</a>
                       </td>
                     </tr>
+                    <?php
+                                }
+                            ?>
                   </tbody>
                 </table>
               </div>
