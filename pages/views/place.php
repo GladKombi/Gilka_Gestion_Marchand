@@ -1,7 +1,7 @@
 <?php 
     include '../../connexion/connexion.php';//Se connecter à la BD
     #Appel de la page qui permet de faire les affichages
-    require_once('../models/select/sel-bloc.php');
+    require_once('../models/select/sel-place.php');
    
 ?>
 <!DOCTYPE html>
@@ -41,9 +41,30 @@
                 unset($_SESSION['msg']);#Cette ligne permet de vider la valeur qui se trouve dans la session message
             ?>
               <form class="forms-sample" action="<?=$url?>" method="POST">
-                <div class="form-group">
-                  <label for="exampleInputName1">Nom du bloc</label>
-                  <input type="text" class="form-control" name="bloc" id="exampleInputName1" placeholder="Entrer le nom du bloc"  <?php if (isset($_GET['idbloc'])) { ?> value="<?php echo $tab['designation']; ?> <?php }?>">
+              <div class="form-group">
+              <label for="exampleSelectGender">Bloc</label>
+                                <select required id="" name="bloc" autocomplete="off" class="form-control" id="exampleSelectGender"
+                                value="<?php echo $tab['designation']; ?> ">
+                                <?php 
+                        $req=$connexion->prepare("SELECT * from bloc where supprimer=0");
+                        $req->execute();
+                        while($bloc=$req->fetch()){ 
+                            $id=$bloc['id'];
+                                    
+                            ?>
+                             <?php if (isset($_GET['idbloc'])) { ?>
+                                <option <?php if($id==$tab['bloc']) {?> selected value="<?php echo $bloc['id']; ?>"><?php echo  $bloc['designation']; ?><?php } else { ?> value="<?php echo $bloc['id']; ?>"><?php echo  $bloc['designation'];} ?></option>
+
+                             <?php } else {?>  
+
+                        <option value="<?php echo $bloc['id']; ?>"><?php echo  $bloc['designation']; ?></option>
+                        <?php }?>
+                        <?php 
+
+                            }
+
+                            ?>
+                                </select>
                 </div>
                 
                   <div
@@ -63,7 +84,8 @@
                   <thead>
                     <tr>
                       <th># </th>
-                      <th>Nom</th>
+                      <th>Numero</th>
+                      <th>Bloc</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -75,9 +97,11 @@
                                 ?>
                     <tr>
                     <th scope="row"><?= $n;?></th>
+                    <td><?= $bloc["Numero"] ?></td>
                     <td> <?= $bloc["designation"] ?></td>
                       <td>
-                      <a href='bloc.php?idbloc=<?=$bloc['id'] ?>' class="btn btn-success btn-sm "><i class="mdi mdi-box-cutter">Modifier</a>
+                      <a href='place.php?idbloc=<?=$bloc['Numero'] ?>' class="btn btn-success btn-sm ">Modifier</a>
+                      <a onclick=" return confirm('Voulez-vous vraiment supprimer ?')" href='../models/delete/del-place.php?idsup=<?=$bloc['Numero'] ?>' class="btn btn-dark btn-sm ">supprimer</a>
                       </td>
                     </tr>
                     <?php

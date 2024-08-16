@@ -1,7 +1,7 @@
 <?php 
     include '../../connexion/connexion.php';//Se connecter à la BD
     #Appel de la page qui permet de faire les affichages
-    require_once('../models/select/sel-bloc.php');
+    require_once('../models/select/sel-type.php');
    
 ?>
 <!DOCTYPE html>
@@ -41,9 +41,37 @@
                 unset($_SESSION['msg']);#Cette ligne permet de vider la valeur qui se trouve dans la session message
             ?>
               <form class="forms-sample" action="<?=$url?>" method="POST">
+              <div class="form-group">
+                  <label for="exampleInputName1">Type de paiement</label>
+                  <input type="text" class="form-control" name="type" id="exampleInputName1" placeholder="Entrer le type"  <?php if (isset($_GET['idtype'])) { ?> value="<?php echo $tab['nomtype']; ?> <?php }?>">
+                </div>
                 <div class="form-group">
-                  <label for="exampleInputName1">Nom du bloc</label>
-                  <input type="text" class="form-control" name="bloc" id="exampleInputName1" placeholder="Entrer le nom du bloc"  <?php if (isset($_GET['idbloc'])) { ?> value="<?php echo $tab['designation']; ?> <?php }?>">
+                  <label for="exampleInputName1">Montant</label>
+                  <input type="text" class="form-control" name="montant" id="exampleInputName1" placeholder="Entrer le Montant"  <?php if (isset($_GET['idtype'])) { ?> value="<?php echo $tab['montant']; ?> <?php }?>">
+                </div>
+              <div class="form-group">
+              <label for="exampleSelectGender">Bloc</label>
+                                <select required id="" name="bloc" autocomplete="off" class="form-control" id="exampleSelectGender"
+                                value="<?php echo $tab['designation']; ?> ">
+                                <?php 
+                        $req=$connexion->prepare("SELECT * from bloc where supprimer=0");
+                        $req->execute();
+                        while($bloc=$req->fetch()){ 
+                            $id=$bloc['id'];     
+                            ?>
+                             <?php if (isset($_GET['idtype'])) { ?>
+                                <option <?php if($id==$tab['bloc']) {?> selected value="<?php echo $bloc['id']; ?>"><?php echo  $bloc['designation']; ?><?php } else { ?> value="<?php echo $bloc['id']; ?>"><?php echo  $bloc['designation'];} ?></option>
+
+                             <?php } else {?>  
+
+                        <option value="<?php echo $bloc['id']; ?>"><?php echo  $bloc['designation']; ?></option>
+                        <?php }?>
+                        <?php 
+
+                            }
+
+                            ?>
+                                </select>
                 </div>
                 
                   <div
@@ -63,21 +91,26 @@
                   <thead>
                     <tr>
                       <th># </th>
-                      <th>Nom</th>
+                      <th>Bloc</th>
+                      <th>Type</th>
+                      <th>Montant</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                   <?php
                                 $n=0;
-                                while($bloc=$getData->fetch()){
+                                while($type=$getData->fetch()){
                                 $n++;
                                 ?>
                     <tr>
                     <th scope="row"><?= $n;?></th>
-                    <td> <?= $bloc["designation"] ?></td>
+                    <td> <?= $type["designation"] ?></td>
+                    <td><?= $type["nomtype"] ?></td>
+                    <td><?= $type["montant"] ?></td>
                       <td>
-                      <a href='bloc.php?idbloc=<?=$bloc['id'] ?>' class="btn btn-success btn-sm "><i class="mdi mdi-box-cutter">Modifier</a>
+                      <a href='type.php?idtype=<?=$type['id'] ?>' class="btn btn-success btn-sm ">Modifier</a>
+                      <a onclick=" return confirm('Voulez-vous vraiment supprimer ?')" href='../models/delete/del-type.php?idsup=<?=$type['id'] ?>' class="btn btn-dark btn-sm ">Supprimer</a>
                       </td>
                     </tr>
                     <?php
