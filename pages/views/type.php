@@ -21,18 +21,25 @@
         <div class="col-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">Enregistrement Etallage</h4>
+              <h4 class="card-title">Enregistrement Type de paiement</h4>
               <p class="card-description">
                 Veillez remplir tout les champs
               </p>
               <form class="forms-sample">
-                <div class="form-group">
-                  <label for="exampleInputName1">Nom de l'etallage</label>
-                  <input type="text" class="form-control" id="exampleInputName1" placeholder="Entrer le nom">
+              <div class="form-group">
+                  <label for="exampleInputEmail3"> Type de paiemnt</label>
+                  <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Numero">
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputEmail3"> Numero</label>
+                  <label for="exampleInputEmail3"> Montant</label>
                   <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Numero">
+                </div>
+                <div class="form-group">
+                  <label for="exampleSelectGender">Bloc</label>
+                  <select class="form-control" id="exampleSelectGender">
+                    <option>A</option>
+                    <option>B</option>
+                  </select>
                 </div>
                 <button type="submit" class="btn btn-primary mr-2">Valider</button>
               </form>
@@ -48,8 +55,9 @@
                   <thead>
                     <tr>
                       <th># </th>
-                      <th>Noms</th>
-                      <th>Genre</th>
+                      <th>Marchands</th>
+                      <th>Bloc</th>
+                      <th>Date</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -57,7 +65,8 @@
                     <tr>
                       <td>1</td>
                       <td>Kahindo Muyisa Seraphine</td>
-                      <td>Fille</td>
+                      <td>A</td>
+                      <td>20/02/2024</td>
                       <td>
                       <a href='' class="btn btn-success btn-sm "><i class="mdi mdi-box-cutter"></i></i></a>
                       <a href='' class="btn btn-dark btn-sm "><i class="mdi mdi-archive"></i></a>

@@ -80,9 +80,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="etalage.php">
+            <a class="nav-link" href="place.php">
               <i class="typcn typcn-document-text menu-icon"></i>
-              <span class="menu-title">Etallages</span>
+              <span class="menu-title">Place</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="type.php">
+              <i class="typcn typcn-document-text menu-icon"></i>
+              <span class="menu-title">Type Paiement</span>
             </a>
           </li>
           <li class="nav-item">
@@ -95,6 +101,12 @@
             <a class="nav-link" href="paiement.php">
               <i class="typcn typcn-document-text menu-icon"></i>
               <span class="menu-title">Paiement</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="utilisateur.php">
+              <i class="typcn typcn-document-text menu-icon"></i>
+              <span class="menu-title">Utilisateur</span>
             </a>
           </li>
           <li class="nav-item">
